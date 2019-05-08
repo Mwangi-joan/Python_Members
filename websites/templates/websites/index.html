@@ -1,0 +1,68 @@
+
+
+{%extends 'websites/base.html'%}
+{%block title%}Python Members{%endblock%}
+{%block content%}
+    <div class="row">
+        {% if profiles %}
+            {% for prof in profiles%}
+                <div class="col-sm-3">
+                    <div class="card card-body my-2" style="background-color:{%if prof.is_male%}white;{%else%}grey;{%endif%}">
+                        <h4 class="text-center" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+                        max-width:90%; border-bottom:1px solid black; font-family:Just Another Hand">{{prof.name}}
+                        </h4>
+
+                        <img src="{{prof.photo.url}}" class="rounded-circle mx-auto img-fluid" alt="" style="height:150px; width:150px">
+                        <div class="caption">
+                            <h5 class="text-center"  style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+                            max-width:90%; font-family:Roboto Condensed">{{prof.occupation}}
+                            </h5>
+                            <h6 class="text-center"  style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+                            max-width:90%; font-family:Roboto Condensed">{{prof.slogan}}
+                            </h6>
+                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-{{prof.id}}">
+                                <i class="fas fa-info"></i>
+                            </button>
+                            <a href="{%url 'websites:delete-member' prof.id%}" class="btn btn-danger btn-sm" style="float:right;">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                    <!--modal-->
+                    <div class="modal fade" id="modal-{{prof.id}}" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">{{prof.name}}</h4>
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="font-family:Ropa Sans;">
+                                        {{prof.name}} is {{prof.age}} years old and is a {{prof.nationality}} citizen.
+                                        {%if prof.is_male%}He{%else%}She {%endif%} first went to {{prof.primary}} and later on joined
+                                        {{prof.secondary}}.You can easily reach {%if prof.is_male%}him{%else%}her {%endif%}
+                                        via {%if prof.is_male%}his{%else%}her {%endif%} email address which is <a href="mailto:{{prof.email}}">{{prof.email}}</a>.
+                                        {%if prof.is_male%}His{%else%}Her {%endif%}
+                                        current occupation is {{prof.occupation}}.
+                                        {{prof.name}} lives in {{prof.residence}} and schools in {{prof.campus}}
+                                        where {%if prof.is_male%}he{%else%}she {%endif%} is studying {{prof.course}}.
+                                        {%if prof.is_male%}His{%else%}Her {%endif%}hobby is {{prof.hobby}}
+                                    </p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="{% url 'websites:update-member' prof.id%}" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{%endblock%}
+
